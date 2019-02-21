@@ -112,6 +112,7 @@ def main():
 	plt.show()
 
 	print_statistic(input_data)
+
 	pass
 
 
@@ -120,11 +121,7 @@ def calculate_mean_value(data):
 
 
 def calculate_sample_variance(data):
-	sum = 0
-	mean_value = calculate_mean_value(data)
-	for item in data:
-		sum += (item - mean_value)**2
-	return sum / len(data)
+	return calculate_central_moment(data, 2)
 
 def calculate_modus(data):
 	sorted_data = sorted(calculate_probability(data).items(), key=lambda x: x[1])
@@ -145,6 +142,28 @@ def calculate_quartiles(data):
 
 def calculate_standard_deviation(data):
 	return calculate_sample_variance(data)**(1/2)
+
+def calculate_central_moment(data, rank):
+	data_dict = calculate_probability(data)
+	probability = data_dict.values()
+	init_values = data_dict.keys()
+	expected_value = calculate_expected_value(init_values, probability)
+	values = []
+
+	for item in init_values:
+		values.append((item - expected_value)**rank)
+
+	return calculate_expected_value(values, probability)
+
+def calculate_expected_value(values, probability):
+	values = list(values)
+	probability = list(probability)
+	expected_value = 0
+
+	for i in range(len(values)):
+		expected_value += values[i] * probability[i]
+	
+	return expected_value
 
 def calculate_median(data):
 	sorted_data = sorted(data)
