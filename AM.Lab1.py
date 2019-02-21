@@ -84,9 +84,11 @@ def plot_distr_func(data):
 def print_statistic(data):
 	mean_value = calculate_mean_value(data)
 	sample_variance = calculate_sample_variance(data)
+	modus = calculate_modus(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
+	print("Modus: {:.2f}".format(modus))
 	pass
 
 
@@ -112,5 +114,8 @@ def calculate_sample_variance(data):
 		sum += (item - mean_value)**2
 	return sum / len(data)
 
+def calculate_modus(data):
+	sorted_data = sorted(calculate_probability(data).items(), key=lambda x: x[1])
+	return sorted_data[-1][0]
 
 main()
