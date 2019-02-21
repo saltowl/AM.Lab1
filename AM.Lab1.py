@@ -87,12 +87,16 @@ def print_statistic(data):
 	modus = calculate_modus(data)
 	standart_error = calculate_standart_error(data)
 	median = calculate_median(data)
+	quartiles = calculate_quartiles(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
 	print("Standart Error: {:.2f}".format(standart_error))
 	print("Modus: {:.2f}".format(modus))
 	print("Median: {:.2f}".format(median))
+	print("First quartile (0.25 quantile): {:.2f}".format(quartiles[0]))
+	print("Second quartile (0.5 quantile): {:.2f}".format(quartiles[1]))
+	print("Third quartile (0.75 quantile): {:.2f}".format(quartiles[2]))
 
 	pass
 
@@ -127,6 +131,15 @@ def calculate_modus(data):
 def calculate_standart_error(data):
 	return math.sqrt(calculate_sample_variance(data)/len(data))
 
+def calculate_quartiles(data):
+	sorted_data = sorted(data)
+	middle_index = len(data) // 2
+
+	first_quartile = calculate_median(sorted_data[:middle_index])
+	second_quartile = calculate_median(data)
+	third_quartile = calculate_median(sorted_data[middle_index:])
+
+	return [first_quartile, second_quartile, third_quartile]
 
 def calculate_median(data):
 	sorted_data = sorted(data)
