@@ -86,6 +86,10 @@ def plot_distr_func(data):
 		prob_sum = round(prob_sum, len(str(len(data))) - 1)
 		plot_ver_line(value, prob_sum)
 	plot_hor_line(previous_value, previous_value + 1, prob_sum)
+
+	plt.title("Distribution function")
+	plt.xlabel("x")
+	plt.ylabel("F(x)")
 	pass
 
 
