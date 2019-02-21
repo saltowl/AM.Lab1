@@ -21,7 +21,7 @@ def get_minimum(data):
 def get_maximum(data):
 	return max(data)
 
-def print_histogram(data):
+def plot_histogram(data):
 	count = math.ceil(len(data)**(1/3)) # count of intervals
 	begin = math.floor(get_minimum(data))
 	end = math.ceil(get_maximum(data))
@@ -83,7 +83,10 @@ def plot_distr_func(data):
 
 def print_statistic(data):
 	mean_value = calculate_mean_value(data)
+	sample_variance = calculate_sample_variance(data)
+
 	print("Mean: {:.2f}".format(mean_value))
+	print("Sample variance: {:.2f}".format(sample_variance))
 	pass
 
 
@@ -91,14 +94,22 @@ def main():
 	input_data = get_input_data("input.txt")
 
 	plot_distr_func(input_data)
-	plt.show()
+	plot_histogram(input_data)
 
 	print_statistic(input_data)
+	plt.show()
 	pass
 
 
 def calculate_mean_value(data):
 	return sum(data)/len(data)
+
+def calculate_sample_variance(data):
+	sum = 0
+	mean_value = calculate_mean_value(data)
+	for item in data:
+		sum += (item - mean_value)**2
+	return sum / len(data)
 
 
 main()
