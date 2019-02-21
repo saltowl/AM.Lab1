@@ -197,25 +197,22 @@ def calculate_asymmetry(data):
 
 
 def calculate_central_moment(data, rank):
-	data_dict = calculate_probability(data)
-	probability = data_dict.values()
-	init_values = data_dict.keys()
-	expected_value = calculate_expected_value(init_values, probability)
-	values = []
+	data_prob = calculate_probability(data)
+	expected_value = calculate_expected_value(data)
 
-	for item in init_values:
-		values.append((item - expected_value)**rank)
+	central_moment = 0
+	for value in data_prob:
+		central_moment += data_prob[value] * (value - expected_value)**rank
 
-	return calculate_expected_value(values, probability)
+	return central_moment
 
 
-def calculate_expected_value(values, probability):
-	values = list(values)
-	probability = list(probability)
+def calculate_expected_value(data):
+	data_prob = calculate_probability(data)
+
 	expected_value = 0
-
-	for i in range(len(values)):
-		expected_value += values[i] * probability[i]
+	for value in data_prob:
+		expected_value += value * data_prob[value]
 	
 	return expected_value
 
@@ -231,6 +228,5 @@ def calculate_median(data):
 		median = sorted_data[middle_index]
 
 	return median
-
 
 main()
