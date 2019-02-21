@@ -8,6 +8,11 @@ def get_input_data(file_name):
 				pass
 	return input_data
 
+
+def calculate_probability(data):
+	return {value : data.count(value)/len(data) for value in data}
+
+
 def main():
 	input_data = get_input_data("input.txt")
 
