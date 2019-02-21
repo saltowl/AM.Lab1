@@ -85,6 +85,22 @@ def plot_distr_func(data):
 	pass
 
 
+def plot_mustached_box(data):
+	min_value = get_minimum(data)
+	max_value = get_maximum(data)
+	quartiles = calculate_quartiles(data)
+
+	plt.boxplot(data, vert=False)
+
+	text_y = 0.89
+	plt.text(min_value, text_y, "Min")
+	plt.text(quartiles[0], text_y, "Q1")
+	plt.text(quartiles[1], text_y, "Median")
+	plt.text(quartiles[2], text_y, "Q3")
+	plt.text(max_value, text_y, "Max")
+	pass
+
+
 def print_statistic(data):
 	mean_value = calculate_mean_value(data)
 	sample_variance = calculate_sample_variance(data)
@@ -113,6 +129,8 @@ def main():
 	plot_histogram(input_data)
 	plt.show()
 	plot_distr_func(input_data)
+	plt.show()
+	plot_mustached_box(input_data)
 	plt.show()
 
 	print_statistic(input_data)
