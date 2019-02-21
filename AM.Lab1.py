@@ -119,8 +119,8 @@ def print_statistic(data):
 	median = calculate_median(data)
 	quartiles = calculate_quartiles(data)
 	standard_deviation = calculate_standard_deviation(data)
+	excess = calculate_excess(data)
 	asymmetry = calculate_asymmetry(data)
-	#Exc
 	min_value = get_minimum(data)
 	max_value = get_maximum(data)
 
@@ -135,8 +135,8 @@ def print_statistic(data):
 	print("Mustached Box parameters: {:.2f}|---{:.2f}|{:.2f}|{:.2f}---|{:.2f}"
 	   .format(min_value, quartiles[0], quartiles[1], quartiles[2], max_value))
 	print("Standard deviation: {:.2f}".format(standard_deviation))
+	print("Excess: {:.2f}".format(excess))
 	print("Asymmetry index: {:.2f}".format(asymmetry))
-	#Exc
 	print("Min: {:.2f}".format(min_value))
 	print("Max: {:.2f}".format(max_value))
 
@@ -186,6 +186,10 @@ def calculate_quartiles(data):
 
 def calculate_standard_deviation(data):
 	return math.sqrt(calculate_sample_variance(data))
+
+
+def calculate_excess(data):
+	return calculate_central_moment(data, 4) / (calculate_standard_deviation(data)**4) - 3
 
 
 def calculate_asymmetry(data):
