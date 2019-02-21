@@ -43,11 +43,19 @@ def plot_distr_func(data):
 	pass
 
 
+def print_statistic(data):
+	mean_value = calculate_mean_value(data)
+	print("Mean: {:.2f}".format(mean_value))
+	pass
+
+
 def main():
 	input_data = get_input_data("input.txt")
 
 	plot_distr_func(input_data)
 	plt.show()
+
+	print_statistic(input_data)
 	pass
 
 
