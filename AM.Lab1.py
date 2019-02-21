@@ -109,6 +109,10 @@ def print_statistic(data):
 	median = calculate_median(data)
 	quartiles = calculate_quartiles(data)
 	standard_deviation = calculate_standard_deviation(data)
+	#Exc
+	#Ass
+	min_value = get_minimum(data)
+	max_value = get_maximum(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
@@ -118,8 +122,13 @@ def print_statistic(data):
 	print("First quartile (0.25 quantile): {:.2f}".format(quartiles[0]))
 	print("Second quartile (0.5 quantile): {:.2f}".format(quartiles[1]))
 	print("Third quartile (0.75 quantile): {:.2f}".format(quartiles[2]))
+	print("Mustached Box parameters: {:.2f}|---{:.2f}|{:.2f}|{:.2f}---|{:.2f}"
+	   .format(min_value, quartiles[0], quartiles[1], quartiles[2], max_value))
 	print("Standard deviation: {:.2f}".format(standard_deviation))
-
+	#Exc
+	#Ass
+	print("Min: {:.2f}".format(min_value))
+	print("Max: {:.2f}".format(max_value))
 	pass
 
 
