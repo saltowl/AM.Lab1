@@ -21,7 +21,7 @@ def get_minimum(data):
 def get_maximum(data):
 	return max(data)
 
-def print_histogram(data):
+def plot_histogram(data):
 	count = math.ceil(len(data)**(1/3)) # count of intervals
 	begin = math.floor(get_minimum(data))
 	end = math.ceil(get_maximum(data))
@@ -90,6 +90,8 @@ def print_statistic(data):
 def main():
 	input_data = get_input_data("input.txt")
 
+	plot_histogram(input_data)
+	plt.show()
 	plot_distr_func(input_data)
 	plt.show()
 
