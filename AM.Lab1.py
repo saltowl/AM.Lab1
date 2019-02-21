@@ -52,13 +52,53 @@ def print_histogram(data):
 	plt.xlabel("Values")
 	plt.ylabel("Probability / Width of interval")
 	plt.title("Histogram")
-
-	plt.show()
 	pass
+
+def plot_distr_func(data):
+
+	def plot_hor_line(begin, end, y):
+		hor_line = {"x" : [begin, end], "y" : [y, y]}
+		plt.plot(hor_line["x"], hor_line["y"], color="black", linestyle="solid", linewidth=1)
+		pass
+	
+	def plot_ver_line(x, end, begin=0):
+		ver_line = {"x" : [x, x], "y" : [begin, end]}
+		plt.plot(ver_line["x"], ver_line["y"], color="black", linestyle="dashed", linewidth=0.8)
+
+
+	data_prob = calculate_probability(data)
+
+	prob_sum = 0
+	previous_value = 0
+	for value in sorted(data_prob.keys()):
+		plot_hor_line(previous_value, value, prob_sum)
+		previous_value = value
+
+		prob_sum += data_prob[value]
+		prob_sum = round(prob_sum, len(str(len(data))) - 1)
+		plot_ver_line(value, prob_sum)
+	plot_hor_line(previous_value, previous_value + 1, prob_sum)
+	pass
+
+
+def print_statistic(data):
+	mean_value = calculate_mean_value(data)
+	print("Mean: {:.2f}".format(mean_value))
+	pass
+
 
 def main():
 	input_data = get_input_data("input.txt")
 
+	plot_distr_func(input_data)
+	plt.show()
+
+	print_statistic(input_data)
 	pass
+
+
+def calculate_mean_value(data):
+	return sum(data)/len(data)
+
 
 main()
