@@ -89,6 +89,7 @@ def print_statistic(data):
 	median = calculate_median(data)
 	quartiles = calculate_quartiles(data)
 	standard_deviation = calculate_standard_deviation(data)
+	asymmetry = calculate_asymmetry(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
@@ -99,6 +100,7 @@ def print_statistic(data):
 	print("Second quartile (0.5 quantile): {:.2f}".format(quartiles[1]))
 	print("Third quartile (0.75 quantile): {:.2f}".format(quartiles[2]))
 	print("Standard deviation: {:.2f}".format(standard_deviation))
+	print("Asymmetry index: {:.2f}".format(asymmetry))
 
 	pass
 
@@ -142,6 +144,9 @@ def calculate_quartiles(data):
 
 def calculate_standard_deviation(data):
 	return calculate_sample_variance(data)**(1/2)
+
+def calculate_asymmetry(data):
+	return calculate_central_moment(data, 3) / (calculate_standard_deviation(data)**3)
 
 def calculate_central_moment(data, rank):
 	data_dict = calculate_probability(data)
