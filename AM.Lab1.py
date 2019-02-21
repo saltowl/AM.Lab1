@@ -84,9 +84,11 @@ def plot_distr_func(data):
 def print_statistic(data):
 	mean_value = calculate_mean_value(data)
 	sample_variance = calculate_sample_variance(data)
+	standart_error = calculate_standart_error(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
+	print("Standart Error: {:.2f}".format(standart_error))
 	pass
 
 
@@ -105,12 +107,17 @@ def main():
 def calculate_mean_value(data):
 	return sum(data)/len(data)
 
+
 def calculate_sample_variance(data):
 	sum = 0
 	mean_value = calculate_mean_value(data)
 	for item in data:
 		sum += (item - mean_value)**2
 	return sum / len(data)
+
+
+def calculate_standart_error(data):
+	return math.sqrt(calculate_sample_variance(data)/len(data))
 
 
 main()
