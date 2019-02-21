@@ -119,8 +119,8 @@ def print_statistic(data):
 	median = calculate_median(data)
 	quartiles = calculate_quartiles(data)
 	standard_deviation = calculate_standard_deviation(data)
+	asymmetry = calculate_asymmetry(data)
 	#Exc
-	#Ass
 	min_value = get_minimum(data)
 	max_value = get_maximum(data)
 
@@ -135,10 +135,11 @@ def print_statistic(data):
 	print("Mustached Box parameters: {:.2f}|---{:.2f}|{:.2f}|{:.2f}---|{:.2f}"
 	   .format(min_value, quartiles[0], quartiles[1], quartiles[2], max_value))
 	print("Standard deviation: {:.2f}".format(standard_deviation))
+	print("Asymmetry index: {:.2f}".format(asymmetry))
 	#Exc
-	#Ass
 	print("Min: {:.2f}".format(min_value))
 	print("Max: {:.2f}".format(max_value))
+
 	pass
 
 
@@ -160,11 +161,7 @@ def calculate_mean_value(data):
 
 
 def calculate_sample_variance(data):
-	sum = 0
-	mean_value = calculate_mean_value(data)
-	for item in data:
-		sum += (item - mean_value)**2
-	return sum / len(data)
+	return calculate_central_moment(data, 2)
 
 
 def calculate_modus(data):
@@ -189,6 +186,34 @@ def calculate_quartiles(data):
 
 def calculate_standard_deviation(data):
 	return math.sqrt(calculate_sample_variance(data))
+
+
+def calculate_asymmetry(data):
+	return calculate_central_moment(data, 3) / (calculate_standard_deviation(data)**3)
+
+
+def calculate_central_moment(data, rank):
+	data_dict = calculate_probability(data)
+	probability = data_dict.values()
+	init_values = data_dict.keys()
+	expected_value = calculate_expected_value(init_values, probability)
+	values = []
+
+	for item in init_values:
+		values.append((item - expected_value)**rank)
+
+	return calculate_expected_value(values, probability)
+
+
+def calculate_expected_value(values, probability):
+	values = list(values)
+	probability = list(probability)
+	expected_value = 0
+
+	for i in range(len(values)):
+		expected_value += values[i] * probability[i]
+	
+	return expected_value
 
 
 def calculate_median(data):
