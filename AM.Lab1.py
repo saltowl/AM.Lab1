@@ -88,6 +88,7 @@ def print_statistic(data):
 	standart_error = calculate_standart_error(data)
 	median = calculate_median(data)
 	quartiles = calculate_quartiles(data)
+	standard_deviation = calculate_standard_deviation(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
@@ -97,6 +98,7 @@ def print_statistic(data):
 	print("First quartile (0.25 quantile): {:.2f}".format(quartiles[0]))
 	print("Second quartile (0.5 quantile): {:.2f}".format(quartiles[1]))
 	print("Third quartile (0.75 quantile): {:.2f}".format(quartiles[2]))
+	print("Standard deviation: {:.2f}".format(standard_deviation))
 
 	pass
 
@@ -140,6 +142,9 @@ def calculate_quartiles(data):
 	third_quartile = calculate_median(sorted_data[middle_index:])
 
 	return [first_quartile, second_quartile, third_quartile]
+
+def calculate_standard_deviation(data):
+	return calculate_sample_variance(data)**(1/2)
 
 def calculate_median(data):
 	sorted_data = sorted(data)
