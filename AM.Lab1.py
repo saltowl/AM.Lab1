@@ -25,6 +25,8 @@ def get_maximum(data):
 
 
 def plot_histogram(data):
+	plt.figure()
+
 	count = math.ceil(len(data)**(1/3)) # count of intervals
 	begin = math.floor(get_minimum(data))
 	end = math.ceil(get_maximum(data))
@@ -70,6 +72,8 @@ def plot_distr_func(data):
 		plt.plot(ver_line["x"], ver_line["y"], color="black", linestyle="dashed", linewidth=0.8)
 
 
+	plt.figure()
+
 	data_prob = calculate_probability(data)
 
 	prob_sum = 0
@@ -86,6 +90,8 @@ def plot_distr_func(data):
 
 
 def plot_mustached_box(data):
+	plt.figure()
+
 	min_value = get_minimum(data)
 	max_value = get_maximum(data)
 	quartiles = calculate_quartiles(data)
@@ -136,13 +142,12 @@ def main():
 	input_data = get_input_data("input.txt")
 
 	plot_histogram(input_data)
-	plt.show()
 	plot_distr_func(input_data)
-	plt.show()
 	plot_mustached_box(input_data)
-	plt.show()
 
 	print_statistic(input_data)
+
+	plt.show()
 	pass
 
 
