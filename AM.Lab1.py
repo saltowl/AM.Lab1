@@ -85,10 +85,15 @@ def print_statistic(data):
 	mean_value = calculate_mean_value(data)
 	sample_variance = calculate_sample_variance(data)
 	modus = calculate_modus(data)
+	standart_error = calculate_standart_error(data)
+	median = calculate_median(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
+	print("Standart Error: {:.2f}".format(standart_error))
 	print("Modus: {:.2f}".format(modus))
+	print("Median: {:.2f}".format(median))
+
 	pass
 
 
@@ -107,6 +112,7 @@ def main():
 def calculate_mean_value(data):
 	return sum(data)/len(data)
 
+
 def calculate_sample_variance(data):
 	sum = 0
 	mean_value = calculate_mean_value(data)
@@ -117,5 +123,22 @@ def calculate_sample_variance(data):
 def calculate_modus(data):
 	sorted_data = sorted(calculate_probability(data).items(), key=lambda x: x[1])
 	return sorted_data[-1][0]
+
+def calculate_standart_error(data):
+	return math.sqrt(calculate_sample_variance(data)/len(data))
+
+
+def calculate_median(data):
+	sorted_data = sorted(data)
+	middle_index = len(data) // 2
+
+	median = 0
+	if middle_index % 2 == 0:
+		median = (sorted_data[middle_index - 1] + sorted_data[middle_index]) / 2
+	else:
+		median = sorted_data[middle_index]
+
+	return median
+
 
 main()
