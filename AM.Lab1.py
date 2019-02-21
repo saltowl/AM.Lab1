@@ -96,7 +96,6 @@ def main():
 	plot_histogram(input_data)
 	plt.show()
 	plot_distr_func(input_data)
-	plot_histogram(input_data)
 
 	print_statistic(input_data)
 	plt.show()
