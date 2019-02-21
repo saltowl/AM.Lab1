@@ -15,11 +15,14 @@ def get_input_data(file_name):
 def calculate_probability(data):
 	return {value : data.count(value)/len(data) for value in data}
 
+
 def get_minimum(data):
 	return min(data)
 
+
 def get_maximum(data):
 	return max(data)
+
 
 def plot_histogram(data):
 	count = math.ceil(len(data)**(1/3)) # count of intervals
@@ -54,6 +57,7 @@ def plot_histogram(data):
 	plt.title("Histogram")
 	pass
 
+
 def plot_distr_func(data):
 
 	def plot_hor_line(begin, end, y):
@@ -81,6 +85,22 @@ def plot_distr_func(data):
 	pass
 
 
+def plot_mustached_box(data):
+	min_value = get_minimum(data)
+	max_value = get_maximum(data)
+	quartiles = calculate_quartiles(data)
+
+	plt.boxplot(data, vert=False)
+
+	text_y = 0.89
+	plt.text(min_value, text_y, "Min")
+	plt.text(quartiles[0], text_y, "Q1")
+	plt.text(quartiles[1], text_y, "Median")
+	plt.text(quartiles[2], text_y, "Q3")
+	plt.text(max_value, text_y, "Max")
+	pass
+
+
 def print_statistic(data):
 	mean_value = calculate_mean_value(data)
 	sample_variance = calculate_sample_variance(data)
@@ -90,6 +110,9 @@ def print_statistic(data):
 	quartiles = calculate_quartiles(data)
 	standard_deviation = calculate_standard_deviation(data)
 	asymmetry = calculate_asymmetry(data)
+	#Exc
+	min_value = get_minimum(data)
+	max_value = get_maximum(data)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
@@ -99,8 +122,13 @@ def print_statistic(data):
 	print("First quartile (0.25 quantile): {:.2f}".format(quartiles[0]))
 	print("Second quartile (0.5 quantile): {:.2f}".format(quartiles[1]))
 	print("Third quartile (0.75 quantile): {:.2f}".format(quartiles[2]))
+	print("Mustached Box parameters: {:.2f}|---{:.2f}|{:.2f}|{:.2f}---|{:.2f}"
+	   .format(min_value, quartiles[0], quartiles[1], quartiles[2], max_value))
 	print("Standard deviation: {:.2f}".format(standard_deviation))
 	print("Asymmetry index: {:.2f}".format(asymmetry))
+	#Exc
+	print("Min: {:.2f}".format(min_value))
+	print("Max: {:.2f}".format(max_value))
 
 	pass
 
@@ -111,6 +139,8 @@ def main():
 	plot_histogram(input_data)
 	plt.show()
 	plot_distr_func(input_data)
+	plt.show()
+	plot_mustached_box(input_data)
 	plt.show()
 
 	print_statistic(input_data)
@@ -125,12 +155,15 @@ def calculate_mean_value(data):
 def calculate_sample_variance(data):
 	return calculate_central_moment(data, 2)
 
+
 def calculate_modus(data):
 	sorted_data = sorted(calculate_probability(data).items(), key=lambda x: x[1])
 	return sorted_data[-1][0]
 
+
 def calculate_standart_error(data):
 	return math.sqrt(calculate_sample_variance(data)/len(data))
+
 
 def calculate_quartiles(data):
 	sorted_data = sorted(data)
@@ -142,8 +175,10 @@ def calculate_quartiles(data):
 
 	return [first_quartile, second_quartile, third_quartile]
 
+
 def calculate_standard_deviation(data):
-	return calculate_sample_variance(data)**(1/2)
+	return math.sqrt(calculate_sample_variance(data))
+
 
 def calculate_asymmetry(data):
 	return calculate_central_moment(data, 3) / (calculate_standard_deviation(data)**3)
