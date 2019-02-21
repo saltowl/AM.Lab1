@@ -15,11 +15,14 @@ def get_input_data(file_name):
 def calculate_probability(data):
 	return {value : data.count(value)/len(data) for value in data}
 
+
 def get_minimum(data):
 	return min(data)
 
+
 def get_maximum(data):
 	return max(data)
+
 
 def plot_histogram(data):
 	count = math.ceil(len(data)**(1/3)) # count of intervals
@@ -53,6 +56,7 @@ def plot_histogram(data):
 	plt.ylabel("Probability / Width of interval")
 	plt.title("Histogram")
 	pass
+
 
 def plot_distr_func(data):
 
@@ -126,12 +130,15 @@ def calculate_sample_variance(data):
 		sum += (item - mean_value)**2
 	return sum / len(data)
 
+
 def calculate_modus(data):
 	sorted_data = sorted(calculate_probability(data).items(), key=lambda x: x[1])
 	return sorted_data[-1][0]
 
+
 def calculate_standart_error(data):
 	return math.sqrt(calculate_sample_variance(data)/len(data))
+
 
 def calculate_quartiles(data):
 	sorted_data = sorted(data)
@@ -143,8 +150,10 @@ def calculate_quartiles(data):
 
 	return [first_quartile, second_quartile, third_quartile]
 
+
 def calculate_standard_deviation(data):
-	return calculate_sample_variance(data)**(1/2)
+	return math.sqrt(calculate_sample_variance(data))
+
 
 def calculate_median(data):
 	sorted_data = sorted(data)
