@@ -50,4 +50,9 @@ def main():
 	plt.show()
 	pass
 
+
+def calculate_mean_value(data):
+	return sum(data)/len(data)
+
+
 main()
