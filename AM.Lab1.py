@@ -93,11 +93,12 @@ def print_statistic(data):
 def main():
 	input_data = get_input_data("input.txt")
 
-	plot_distr_func(input_data)
 	plot_histogram(input_data)
+	plt.show()
+	plot_distr_func(input_data)
+	plt.show()
 
 	print_statistic(input_data)
-	plt.show()
 	pass
 
 
