@@ -157,7 +157,13 @@ def main():
 
 
 def calculate_mean_value(data):
-	return sum(data)/len(data)
+	data_prob = calculate_probability(data)
+
+	mean_value = 0
+	for value in data_prob:
+		mean_value += value * data_prob[value]
+
+	return mean_value
 
 
 def calculate_sample_variance(data):
@@ -198,23 +204,13 @@ def calculate_asymmetry(data):
 
 def calculate_central_moment(data, rank):
 	data_prob = calculate_probability(data)
-	expected_value = calculate_expected_value(data)
+	mean_value = calculate_mean_value(data)
 
 	central_moment = 0
 	for value in data_prob:
-		central_moment += data_prob[value] * (value - expected_value)**rank
+		central_moment += data_prob[value] * (value - mean_value)**rank
 
 	return central_moment
-
-
-def calculate_expected_value(data):
-	data_prob = calculate_probability(data)
-
-	expected_value = 0
-	for value in data_prob:
-		expected_value += value * data_prob[value]
-	
-	return expected_value
 
 
 def calculate_median(data):
