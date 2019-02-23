@@ -24,9 +24,7 @@ def get_maximum(data):
 	return max(data)
 
 
-def plot_histogram(data):
-	plt.figure()
-
+def calculate_histogram_values(data):
 	count = math.ceil(len(data)**(1/3)) # count of intervals
 	begin = math.floor(get_minimum(data))
 	end = math.ceil(get_maximum(data))
@@ -51,13 +49,22 @@ def plot_histogram(data):
 		y.append(probability / step)
 		i += 1
 		xi += step
+
+	return x, y
+
+
+def plot_histogram(data):
+	plt.figure()
+
+	intervals, probabilities = calculate_histogram_values(data)
+	step = intervals[1] - intervals[0]
 	
 	plt.style.use("bmh")
-	plt.bar(x, y, step, align = 'edge', color = 'sandybrown', edgecolor = 'sienna', linewidth = 1.5)
+	plt.bar(intervals, probabilities, step, align = 'edge', color = 'sandybrown', edgecolor = 'sienna', linewidth = 1.5)
 	plt.xlabel("Values")
 	plt.ylabel("Probability / Width of interval")
 	plt.title("Histogram")
-	pass
+	return intervals, probabilities
 
 
 def plot_distr_func(data):
