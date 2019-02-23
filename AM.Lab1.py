@@ -26,47 +26,51 @@ def get_maximum(data):
 	return max(data)
 
 
-def calculate_histogram_values(data):
-	count = math.ceil(len(data)**(1/3)) # count of intervals
+def calculate_intervals(data):
 	begin = math.floor(get_minimum(data))
 	end = math.ceil(get_maximum(data))
-	step = round((end - begin) / count) # width of interval
-	x = []
-	y = []
-	xi = begin
-	i = 0
+	step = round((end - begin)**(1/3)) # width of interval
+	count = round((end - begin) / step) # count of intervals
+	
+	intervals = [Interval() for i in range(count)]
+	current_border = begin
+	for interval in intervals:
+		interval.begin = current_border
+		interval.end = current_border + step
+		current_border += step
 
-	while i < count:
-		count_in_one_interval = 0
+	sorted_data = sorted(data)
+	interval_index = 0
+	current_interval = intervals[interval_index]
+	for i in range(len(sorted_data)):
+		value = sorted_data[i]
+		if (value > current_interval.end or i == len(sorted_data) - 1):
+			current_interval.probability = current_interval.count / (len(data) * step)
+			current_interval.mean = round(current_interval.sum / current_interval.count, 1)
+			if i != len(sorted_data) - 1:
+				interval_index += 1
+				current_interval = intervals[interval_index]
 		
-		for item in data:
-			if (((item < xi + step) & (item > xi) & (xi != begin) & (xi != end)) 
-                | ((xi == begin) & (item < xi + step)) 
-                | ((xi == end) & (item > xi))):
-				count_in_one_interval +=1
-		
-		probability = count_in_one_interval / len(data)
-		
-		x.append(xi)
-		y.append(probability / step)
-		i += 1
-		xi += step
+		current_interval.sum = round(current_interval.sum, 1) + value
+		current_interval.count += 1
 
-	return x, y
+	return intervals
 
 
 def plot_histogram(data):
 	plt.figure()
 
-	intervals, probabilities = calculate_histogram_values(data)
-	step = intervals[1] - intervals[0]
+	intervals = calculate_intervals(data)
+	left_borders = [interval.begin for interval in intervals]
+	probabilities = [interval.probability for interval in intervals]
+	step = left_borders[1] - left_borders[0]
 	
 	plt.style.use("bmh")
-	plt.bar(intervals, probabilities, step, align = 'edge', color = 'sandybrown', edgecolor = 'sienna', linewidth = 1.5)
+	plt.bar(left_borders, probabilities, step, align = 'edge', color = 'sandybrown', edgecolor = 'sienna', linewidth = 1.5)
 	plt.xlabel("Values")
 	plt.ylabel("Probability / Width of interval")
 	plt.title("Histogram")
-	return intervals, probabilities
+	pass
 
 
 def plot_distr_func(data):
