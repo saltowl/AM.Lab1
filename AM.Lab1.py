@@ -242,4 +242,32 @@ def calculate_conf_interval_E(data, alpha):
 	return st.t.interval(alpha, len(data) - 1, calculate_mean_value(data))
 
 
+def calculate_intervals(data):
+	begin = math.floor(get_minimum(data))
+	end = math.ceil(get_maximum(data))
+	count = round((end - begin) / 2) # math.ceil(len(data)**(1/3)) # count of intervals
+	step = round((end - begin) / count) # width of interval
+	
+	intervals = [Interval() for i in range(count)]
+	current_border = begin
+	for interval in intervals:
+		interval.begin = current_border
+		interval.end = current_border + step
+		current_border += step
+
+	sorted_data = sorted(data)
+	interval_index = 0
+	current_interval = intervals[interval_index]
+	for value in sorted_data:
+		if (value > current_interval.end):
+			current_interval.probability = current_interval.count / (len(data) * step)
+			current_interval.mean = current_interval.sum / current_interval.count
+			interval_index += 1
+		
+		current_interval.sum += value
+		current_interval.count += 1
+
+	return intervals
+
+
 main()
