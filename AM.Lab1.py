@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import scipy.stats as st
 import math
 
 def get_input_data(file_name):
@@ -130,6 +131,7 @@ def print_statistic(data):
 	asymmetry = calculate_asymmetry(data)
 	min_value = get_minimum(data)
 	max_value = get_maximum(data)
+	conf_interval_E = calculate_conf_interval_E(data, 0.95)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
@@ -146,6 +148,8 @@ def print_statistic(data):
 	print("Asymmetry index: {:.2f}".format(asymmetry))
 	print("Min: {:.2f}".format(min_value))
 	print("Max: {:.2f}".format(max_value))
+	print("\nConfidence interval for mathematical expectation: ({:.2f}; {:.2f})"
+	   .format(conf_interval_E[0], conf_interval_E[1]))
 
 	pass
 
@@ -231,5 +235,10 @@ def calculate_median(data):
 		median = sorted_data[middle_index]
 
 	return median
+
+
+def calculate_conf_interval_E(data, alpha):
+	return st.t.interval(alpha, len(data) - 1, calculate_mean_value(data))
+
 
 main()
