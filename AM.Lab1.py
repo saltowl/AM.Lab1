@@ -137,6 +137,7 @@ def print_statistic(data):
 	min_value = get_minimum(data)
 	max_value = get_maximum(data)
 	conf_interval_E = calculate_conf_interval_E(data, 0.95)
+	conf_interval_S = calculate_conf_interval_S(data, 0.95)
 
 	print("Mean: {:.2f}".format(mean_value))
 	print("Sample variance: {:.2f}".format(sample_variance))
@@ -153,8 +154,11 @@ def print_statistic(data):
 	print("Asymmetry index: {:.2f}".format(asymmetry))
 	print("Min: {:.2f}".format(min_value))
 	print("Max: {:.2f}".format(max_value))
+
 	print("\nConfidence interval for mathematical expectation: ({:.2f}; {:.2f})"
 	   .format(conf_interval_E[0], conf_interval_E[1]))
+	print("Confidence interval for standard deviation: ({:.2f}; {:.2f})"
+	   .format(conf_interval_S[0], conf_interval_S[1]))
 
 	pass
 
@@ -242,36 +246,17 @@ def calculate_median(data):
 	return median
 
 
-def calculate_conf_interval_E(data, alpha):
-	return st.t.interval(alpha, len(data) - 1, calculate_mean_value(data))
+def calculate_conf_interval_E(data, gamma):
+	return st.t.interval(gamma, len(data) - 1, calculate_mean_value(data))
 
 
-def calculate_intervals(data):
-	begin = math.floor(get_minimum(data))
-	end = math.ceil(get_maximum(data))
-	count = round((end - begin) / 2) # math.ceil(len(data)**(1/3)) # count of intervals
-	step = round((end - begin) / count) # width of interval
-	
-	intervals = [Interval() for i in range(count)]
-	current_border = begin
-	for interval in intervals:
-		interval.begin = current_border
-		interval.end = current_border + step
-		current_border += step
+def calculate_conf_interval_S(data, gamma):
+	df = len(data) - 1
+	chi2_k1 = st.chi2.ppf((1 + gamma) / 2, df)
+	chi2_k2 = st.chi2.ppf((1 - gamma) / 2, df)
+	S = calculate_standard_deviation(data)
 
-	sorted_data = sorted(data)
-	interval_index = 0
-	current_interval = intervals[interval_index]
-	for value in sorted_data:
-		if (value > current_interval.end):
-			current_interval.probability = current_interval.count / (len(data) * step)
-			current_interval.mean = current_interval.sum / current_interval.count
-			interval_index += 1
-		
-		current_interval.sum += value
-		current_interval.count += 1
-
-	return intervals
+	return (S * ((df / chi2_k1)**(1/2)), S * ((df / chi2_k2)**(1/2)))
 
 
 main()
