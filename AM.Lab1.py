@@ -39,20 +39,14 @@ def calculate_intervals(data):
 		interval.end = current_border + step
 		current_border += step
 
-	sorted_data = sorted(data)
-	interval_index = 0
-	current_interval = intervals[interval_index]
-	for i in range(len(sorted_data)):
-		value = sorted_data[i]
-		if (value > current_interval.end or i == len(sorted_data) - 1):
-			current_interval.probability = current_interval.count / (len(data) * step)
-			current_interval.mean = round(current_interval.sum / current_interval.count, 1)
-			if i != len(sorted_data) - 1:
-				interval_index += 1
-				current_interval = intervals[interval_index]
-		
-		current_interval.sum = round(current_interval.sum, 1) + value
+	for value in data:
+		current_interval = intervals[int(value / step)]
 		current_interval.count += 1
+		current_interval.sum = round(current_interval.sum, 1) + value
+
+	for interval in intervals:
+		interval.probability = interval.count / (len(data) * step)
+		interval.mean = round(interval.sum / interval.count, 1)
 
 	return intervals
 
