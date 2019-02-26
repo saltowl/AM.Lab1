@@ -130,6 +130,8 @@ def print_statistic(data):
 	asymmetry = calculate_asymmetry(data)
 	min_value = get_minimum(data)
 	max_value = get_maximum(data)
+
+	pearson_criterions = calculate_pearson_criterions(data, 0.025)
 	conf_interval_E = calculate_conf_interval_E(data, 0.95)
 	conf_interval_S = calculate_conf_interval_S(data, 0.95)
 
@@ -148,6 +150,9 @@ def print_statistic(data):
 	print("Asymmetry index: {:.2f}".format(asymmetry))
 	print("Min: {:.2f}".format(min_value))
 	print("Max: {:.2f}".format(max_value))
+
+	print("\nPearson criterions (X^2 < X^2 table): {:.2f} < {:.2f} {}"
+	   .format(pearson_criterions[0], pearson_criterions[1], pearson_criterions[0] < pearson_criterions[1]))
 
 	print("\nConfidence interval for mathematical expectation: ({:.2f}; {:.2f})"
 	   .format(conf_interval_E[0], conf_interval_E[1]))
@@ -238,6 +243,29 @@ def calculate_median(data):
 		median = sorted_data[middle_index]
 
 	return median
+
+
+def calculate_pearson_criterions(data, importance):
+	intervals = calculate_intervals(data)
+
+	parameter_count = 2 # As we compare data to normal distribution, which has 2 parameters: mean and dispersion
+	freedom_rank = len(intervals) - parameter_count - 1
+	pearson_crit_theor = st.chi2.ppf(1 - importance, df=freedom_rank) # a = 0.025, p = 2
+
+	intervals_mean = round(sum([interval.mean * interval.probability for interval in intervals]), 1)
+	intervals_variance = round(sum([(interval.mean - intervals_mean)**2 * interval.probability for interval in intervals]), 1)
+	
+	z = [(interval.mean - intervals_mean) / math.sqrt(intervals_variance) for interval in intervals]
+	norm_distr_values = [st.norm.cdf(z_value) for z_value in z]
+	probabilities_theor = [norm_distr_values[i] - norm_distr_values[i - 1] for i in range(1, len(norm_distr_values))]
+	probabilities_theor.insert(0, norm_distr_values[0])
+
+	pearson_crit_real = 0
+	for i in range(len(intervals)):
+		pearson_crit_real += (probabilities_theor[i] - intervals[i].probability)**2 / probabilities_theor[i]
+	pearson_crit_real *= len(data)
+
+	return (pearson_crit_real, pearson_crit_theor)
 
 
 def calculate_conf_interval_E(data, gamma):
