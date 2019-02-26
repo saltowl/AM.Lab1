@@ -50,7 +50,8 @@ def calculate_intervals(data):
 		
 	for interval in intervals:
 		interval.probability = interval.count / (len(data) * step)
-		interval.mean = round(interval.sum / interval.count, 1)
+		if interval.count != 0:
+			interval.mean = round(interval.sum / interval.count, 1)
 
 	return intervals
 
