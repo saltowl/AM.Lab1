@@ -29,14 +29,14 @@ def get_maximum(data):
 def calculate_intervals(data):
 	begin = math.floor(get_minimum(data))
 	end = math.ceil(get_maximum(data))
-	step = round((end - begin)**(1/3)) # width of interval
-	count = round((end - begin) / step) # count of intervals
+	count = round((end - begin) * 100 / len(data)) # Calculation may be wrong for other data sets
+	step = round((end - begin) / count, 1)
 	
 	intervals = [Interval() for i in range(count)]
 	current_border = begin
 	for interval in intervals:
-		interval.begin = current_border
-		interval.end = current_border + step
+		interval.begin = round(current_border, 1) 
+		interval.end = round(current_border + step, 1)
 		current_border += step
 
 	for value in data:
