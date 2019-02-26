@@ -59,11 +59,11 @@ def plot_histogram(data):
 	probabilities = [interval.probability for interval in intervals]
 	step = left_borders[1] - left_borders[0]
 	
-	plt.style.use("bmh")
-	plt.bar(left_borders, probabilities, step, align = 'edge', color = 'sandybrown', edgecolor = 'sienna', linewidth = 1.5)
-	plt.xlabel("Values")
-	plt.ylabel("Probability / Width of interval")
-	plt.title("Histogram")
+	with plt.style.context("bmh"):
+		plt.bar(left_borders, probabilities, step, align = 'edge', color = 'sandybrown', edgecolor = 'sienna', linewidth = 1.5)
+		plt.xlabel("Values")
+		plt.ylabel("Probability / Width of interval")
+		plt.title("Histogram")
 	pass
 
 
@@ -80,6 +80,7 @@ def plot_distr_func(data):
 
 
 	plt.figure()
+	plt.grid(b=True)
 
 	data_prob = calculate_probability(data)
 
@@ -102,6 +103,7 @@ def plot_distr_func(data):
 
 def plot_mustached_box(data):
 	plt.figure()
+	plt.grid(b=True, axis="x")
 
 	min_value = get_minimum(data)
 	max_value = get_maximum(data)
@@ -110,11 +112,12 @@ def plot_mustached_box(data):
 	plt.boxplot(data, vert=False)
 
 	text_y = 0.89
-	plt.text(min_value, text_y, "Min")
-	plt.text(quartiles[0], text_y, "Q1")
-	plt.text(quartiles[1], text_y, "Median")
-	plt.text(quartiles[2], text_y, "Q3")
-	plt.text(max_value, text_y, "Max")
+	text_x_offset = -0.25
+	plt.text(min_value + text_x_offset, text_y, "Min")
+	plt.text(quartiles[0] + text_x_offset, text_y, "Q1")
+	plt.text(quartiles[1] + text_x_offset * 2, text_y, "Median")
+	plt.text(quartiles[2] + text_x_offset, text_y, "Q3")
+	plt.text(max_value + text_x_offset, text_y, "Max")
 	pass
 
 
