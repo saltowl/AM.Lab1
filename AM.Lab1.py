@@ -40,10 +40,14 @@ def calculate_intervals(data):
 		current_border += step
 
 	for value in data:
-		current_interval = intervals[int(value / step)]
+		if value != end:
+			current_interval = intervals[int((value - begin) / step)]
+		else:
+			current_interval = intervals[count - 1]
+
 		current_interval.count += 1
 		current_interval.sum = round(current_interval.sum, 1) + value
-
+		
 	for interval in intervals:
 		interval.probability = interval.count / (len(data) * step)
 		interval.mean = round(interval.sum / interval.count, 1)
